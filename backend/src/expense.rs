@@ -1,11 +1,11 @@
 use actix_web::{web, HttpResponse, Responder};
+use log::info;
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 use uuid::Uuid;
-use log::info;
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Expense {
+pub struct Expense {
     id: Uuid,
     amount: f64,
     description: String,
@@ -14,7 +14,10 @@ struct Expense {
     price: f64,
 }
 
-pub async fn create_expense(pool: web::Data<PgPool>, expense: web::Json<Expense>) -> impl Responder {
+pub async fn create_expense(
+    pool: web::Data<PgPool>,
+    expense: web::Json<Expense>,
+) -> impl Responder {
     let expense = expense.into_inner();
     info!("Creating expense: {:?}", expense);
     let result = sqlx::query!(
@@ -67,7 +70,11 @@ pub async fn list_expenses(pool: web::Data<PgPool>) -> impl Responder {
     }
 }
 
-pub async fn update_expense(pool: web::Data<PgPool>, expense_id: web::Path<Uuid>, expense: web::Json<Expense>) -> impl Responder {
+pub async fn update_expense(
+    pool: web::Data<PgPool>,
+    expense_id: web::Path<Uuid>,
+    expense: web::Json<Expense>,
+) -> impl Responder {
     let expense = expense.into_inner();
     let result = sqlx::query!(
         "UPDATE expenses SET amount = $1, description = $2, date = $3, mileage = $4, price = $5 WHERE id = $6",
@@ -87,14 +94,14 @@ pub async fn update_expense(pool: web::Data<PgPool>, expense_id: web::Path<Uuid>
     }
 }
 
-pub async fn delete_expense(pool: web::Data<PgPool>, expense_id: web::Path<Uuid>) -> impl Responder {
+pub async fn delete_expense(
+    pool: web::Data<PgPool>,
+    expense_id: web::Path<Uuid>,
+) -> impl Responder {
     let expense_id = expense_id.into_inner();
-    let result = sqlx::query!(
-        "DELETE FROM expenses WHERE id = $1",
-        expense_id
-    )
-    .execute(pool.get_ref())
-    .await;
+    let result = sqlx::query!("DELETE FROM expenses WHERE id = $1", expense_id)
+        .execute(pool.get_ref())
+        .await;
 
     match result {
         Ok(_) => HttpResponse::Ok().body(format!("Deleted expense with id: {}", expense_id)),

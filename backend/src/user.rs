@@ -21,7 +21,7 @@ async fn get_user(user_id: web::Path<Uuid>) -> impl Responder {
     })
 }
 
-async fn update_user(user_id: web::Path<Uuid>, user: web::Json<User>) -> impl Responder {
+async fn update_user(_user_id: web::Path<Uuid>, user: web::Json<User>) -> impl Responder {
     HttpResponse::Ok().json(user.into_inner())
 }
 

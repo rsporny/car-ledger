@@ -1,13 +1,12 @@
 mod expense;
 mod user;
-mod utils;
 
 use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};
-use sqlx::postgres::PgPoolOptions;
-use std::env;
 use dotenv::dotenv;
 use env_logger::Env;
+use sqlx::postgres::PgPoolOptions;
+use std::env;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -23,7 +22,12 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
-            .wrap(Cors::default().allow_any_origin().allow_any_method().allow_any_header())
+            .wrap(
+                Cors::default()
+                    .allow_any_origin()
+                    .allow_any_method()
+                    .allow_any_header(),
+            )
             .app_data(web::Data::new(pool.clone()))
             .configure(expense::init_routes)
             .configure(user::init_routes)

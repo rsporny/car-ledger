@@ -1,0 +1,53 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgres://postgres:password@localhost:5432/car_ledger_db
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: car_ledger_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: Install SQLx CLI
+        run: cargo install sqlx-cli
+      - name: Run database migrations
+        run: sqlx migrate run
+        working-directory: ./backend
+      - name: Build backend
+        run: cargo build --release
+        working-directory: ./backend
+      - name: Test backend
+        run: cargo test
+        working-directory: ./backend
+  
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          components: rustfmt
+      - name: Rustfmt Check
+        uses: actions-rust-lang/rustfmt@v1
