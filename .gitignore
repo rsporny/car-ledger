@@ -1,0 +1,13 @@
+# Rust
+target/
+**/*.rs.bk
+
+# Trunk
+dist/
+.stash/
+
+# Ignore .env files
+.env
+
+# Mac OS
+.DS_Store

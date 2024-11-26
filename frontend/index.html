@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Car Ledger Frontend</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        nav {
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/">Home</a>
+            <a href="/expenses">Expenses</a>
+            <a href="/expenses/new">New Expense</a>
+        </nav>
+        <div id="root"></div>
+    </div>
+    <script type="module">
+        import init from './pkg/car_ledger_frontend.js';
+        init();
+    </script>
+</body>
+</html>
