@@ -17,6 +17,7 @@ struct Expense {
 
 #[function_component(ExpenseForm)]
 pub fn expense_form() -> Html {
+    let backend_url = std::env!("BACKEND_URL");
     let amount = use_state(|| 0.0);
     let description = use_state(|| "".to_string());
     let date = use_state(|| "".to_string());
@@ -46,22 +47,20 @@ pub fn expense_form() -> Html {
             let message = message.clone();
             spawn_local(async move {
                 let client = Client::new();
-                match client.post("http://127.0.0.1:8081/expenses/")
-                    .json(&expense)
-                    .send()
-                    .await {
-                        Ok(response) => {
-                            if response.status().is_success() {
-                                message.set("Expense added successfully".to_string());
-                            } else {
-                                let error_text = response.text().await.unwrap_or_else(|_| "Unknown error".to_string());
-                                message.set(format!("Failed to add expense: {}", error_text));
-                            }
-                        },
-                        Err(err) => {
-                            message.set(format!("Error: Failed to add expense: {}", err));
+                let url = format!("{}/expenses/", backend_url);
+                match client.post(&url).json(&expense).send().await {
+                    Ok(response) => {
+                        if response.status().is_success() {
+                            message.set("Expense added successfully".to_string());
+                        } else {
+                            let error_text = response.text().await.unwrap_or_else(|_| "Unknown error".to_string());
+                            message.set(format!("Failed to add expense: {}", error_text));
                         }
+                    },
+                    Err(err) => {
+                        message.set(format!("Error: Failed to add expense: {}", err));
                     }
+                }
             });
         })
     };

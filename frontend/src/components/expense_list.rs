@@ -17,6 +17,7 @@ struct Expense {
 
 #[function_component(ExpenseList)]
 pub fn expense_list() -> Html {
+    let backend_url = std::env!("BACKEND_URL");
     let expenses = use_state(|| vec![]);
 
     {
@@ -24,7 +25,8 @@ pub fn expense_list() -> Html {
         use_effect_with_deps(move |_| {
             spawn_local(async move {
                 let client = Client::new();
-                match client.get("http://127.0.0.1:8081/expenses/").send().await {
+                let url = format!("{}/expenses/", backend_url);
+                match client.get(&url).send().await {
                     Ok(response) => {
                         if response.status().is_success() {
                             match response.json::<Vec<Expense>>().await {

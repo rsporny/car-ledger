@@ -20,6 +20,9 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Failed to create pool.");
 
+    // Read the bind address from the environment variable or use a default value
+    let bind_address = env::var("BIND_ADDRESS").unwrap_or_else(|_| "127.0.0.1:8081".to_string());
+
     HttpServer::new(move || {
         App::new()
             .wrap(
@@ -32,7 +35,7 @@ async fn main() -> std::io::Result<()> {
             .configure(expense::init_routes)
             .configure(user::init_routes)
     })
-    .bind("backend:8081")?
+    .bind(&bind_address)?
     .run()
     .await
 }

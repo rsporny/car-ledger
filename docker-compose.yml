@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:latest
-    container_name: car_ledger_postgres
+    container_name: db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -15,9 +15,10 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: car_ledger_backend
+    container_name: backend
     environment:
       DATABASE_URL: postgres://postgres:password@postgres:5432/car_ledger_db
+      BIND_ADDRESS: backend:8081
     ports:
       - "8081:8081"
     depends_on:
@@ -27,7 +28,9 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: car_ledger_frontend
+    container_name: frontend
+    environment:
+      BACKEND_URL: http://127.0.0.1:8081
     ports:
       - "8080:8080"
     depends_on:

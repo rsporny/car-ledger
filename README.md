@@ -65,5 +65,5 @@ The frontend is built using the Yew web framework.
     ```
 3. Run the frontend:
     ```sh
-    trunk serve
+    BACKEND_URL=http://127.0.0.1:80801 trunk serve
     ```

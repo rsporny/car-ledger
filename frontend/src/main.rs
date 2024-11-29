@@ -1,4 +1,3 @@
-use yew::prelude::*;
 use yew::Renderer;
 
 mod app;
