@@ -1,0 +1,19 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO expenses (id, amount, description, date, mileage, price) VALUES ($1, $2, $3, $4, $5, $6)",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Float8",
+        "Text",
+        "Text",
+        "Int4",
+        "Float8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "1b66e685e1620bb543677ea958af440ceb569aca51ef24a0a43e9edf067bef77"
+}

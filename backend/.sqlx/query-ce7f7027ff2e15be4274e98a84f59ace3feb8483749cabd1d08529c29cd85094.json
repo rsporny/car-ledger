@@ -1,0 +1,52 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT id, amount, description, date, mileage, price FROM expenses WHERE id = $1",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "amount",
+        "type_info": "Float8"
+      },
+      {
+        "ordinal": 2,
+        "name": "description",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "date",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "mileage",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "price",
+        "type_info": "Float8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "ce7f7027ff2e15be4274e98a84f59ace3feb8483749cabd1d08529c29cd85094"
+}

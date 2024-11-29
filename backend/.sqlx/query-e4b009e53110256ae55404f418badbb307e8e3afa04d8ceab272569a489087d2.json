@@ -1,0 +1,19 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE expenses SET amount = $1, description = $2, date = $3, mileage = $4, price = $5 WHERE id = $6",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Float8",
+        "Text",
+        "Text",
+        "Int4",
+        "Float8",
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "e4b009e53110256ae55404f418badbb307e8e3afa04d8ceab272569a489087d2"
+}

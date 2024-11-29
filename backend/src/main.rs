@@ -32,7 +32,7 @@ async fn main() -> std::io::Result<()> {
             .configure(expense::init_routes)
             .configure(user::init_routes)
     })
-    .bind("127.0.0.1:8081")?
+    .bind("backend:8081")?
     .run()
     .await
 }

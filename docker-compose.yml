@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: car_ledger_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: car_ledger_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: car_ledger_backend
+    environment:
+      DATABASE_URL: postgres://postgres:password@postgres:5432/car_ledger_db
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: car_ledger_frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
