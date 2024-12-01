@@ -14,7 +14,6 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
     container_name: backend
     environment:
       DATABASE_URL: postgres://postgres:password@postgres:5432/car_ledger_db
@@ -27,12 +26,11 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      args:
+        BACKEND_URL: http://127.0.0.1:8081
     container_name: frontend
-    environment:
-      BACKEND_URL: http://127.0.0.1:8081
     ports:
-      - "8080:8080"
+      - "80:80"
     depends_on:
       - backend
 
